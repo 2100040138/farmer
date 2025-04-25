@@ -1,0 +1,9 @@
+from tensorflow import keras
+
+# Load the existing .keras model
+model = keras.models.load_model("plant_disease_model.keras")
+
+# Save it as a .h5 model
+model.save("plant_disease_model.h5")
+
+print("✅ Model successfully converted to .h5 format.")
