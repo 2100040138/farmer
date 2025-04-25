@@ -1,3 +1,22 @@
+from flask import Flask, request, render_template
+import pickle
+import tensorflow as tf
+
+app = Flask(__name__)
+
+# ✅ Load models globally
+with open("crop_model.pkl", "rb") as f:
+    crop_model = pickle.load(f)
+
+disease_model = tf.keras.models.load_model("plant_disease_model.h5")
+
+# Routes start here
+@app.route('/')
+def home():
+    return render_template("index.html")
+
+# ... your other routes ...
+
 # ------------ YOUR IMPORTS (same as you wrote) ------------
 
 import os
