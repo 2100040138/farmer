@@ -1,3 +1,7 @@
 __pycache__/
-*.pyc
 uploads/
+*.pyc
+*.pkl
+*.h5
+plant_disease_model.keras
+crop_model.pkl

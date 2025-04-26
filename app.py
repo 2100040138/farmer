@@ -1,22 +1,3 @@
-from flask import Flask, request, render_template
-import pickle
-import tensorflow as tf
-
-app = Flask(__name__)
-
-# ✅ Load models globally
-with open("crop_model.pkl", "rb") as f:
-    crop_model = pickle.load(f)
-
-disease_model = tf.keras.models.load_model("plant_disease_model.h5")
-
-# Routes start here
-@app.route('/')
-def home():
-    return render_template("index.html")
-
-# ... your other routes ...
-
 # ------------ YOUR IMPORTS (same as you wrote) ------------
 
 import os
@@ -60,7 +41,153 @@ CROP_GUIDELINES = {
         'watering': 'Regular irrigation needed especially at flowering stage',
         'precautions': 'Control rust disease and aphids'
     },
-    # Add other crops too...
+    'maize': {
+        'season': 'Kharif (June - October)',
+        'soil': 'Well-drained sandy loam to loamy soil',
+        'fertilizer': 'NPK fertilizers, especially Nitrogen',
+        'watering': 'Moderate watering, avoid waterlogging',
+        'precautions': 'Protect from stem borers and leaf blight'
+    },
+    'chickpea': {
+        'season': 'Rabi (October - March)',
+        'soil': 'Well-drained sandy loam or clay loam soil',
+        'fertilizer': 'Phosphorus and Potash fertilizers',
+        'watering': 'Minimal watering, sensitive to excess moisture',
+        'precautions': 'Watch for wilt and pod borer'
+    },
+    'kidneybeans': {
+        'season': 'Kharif (June - October)',
+        'soil': 'Loamy, well-drained soil',
+        'fertilizer': 'Moderate nitrogen, phosphorus, and potassium',
+        'watering': 'Regular watering, avoid waterlogging',
+        'precautions': 'Prevent rust and bacterial blight'
+    },
+    'pigeonpeas': {
+        'season': 'Kharif (June - November)',
+        'soil': 'Well-drained loamy soil',
+        'fertilizer': 'Phosphorus-rich fertilizers',
+        'watering': 'Moderate watering, drought-tolerant crop',
+        'precautions': 'Protect from pod borer and wilt'
+    },
+    'mothbeans': {
+        'season': 'Kharif (June - September)',
+        'soil': 'Sandy loam, well-drained soil',
+        'fertilizer': 'Minimal fertilizer, phosphate-based if needed',
+        'watering': 'Drought-resistant, minimal irrigation',
+        'precautions': 'Control of powdery mildew and root rot'
+    },
+    'mungbean': {
+        'season': 'Kharif and Summer',
+        'soil': 'Loamy soil with good drainage',
+        'fertilizer': 'Low nitrogen, more phosphorus and potassium',
+        'watering': 'Regular light irrigation',
+        'precautions': 'Prevent yellow mosaic virus and aphids'
+    },
+    'blackgram': {
+        'season': 'Kharif and Summer',
+        'soil': 'Fertile, well-drained loamy soil',
+        'fertilizer': 'Phosphorus and Potash mainly',
+        'watering': 'Requires moderate irrigation',
+        'precautions': 'Protect from leaf curl and Cercospora leaf spot'
+    },
+    'lentil': {
+        'season': 'Rabi (October - April)',
+        'soil': 'Sandy loam with neutral pH',
+        'fertilizer': 'Moderate phosphorus and potash',
+        'watering': 'Requires minimal irrigation',
+        'precautions': 'Check for rust and wilt diseases'
+    },
+    'pomegranate': {
+        'season': 'Year-round in tropical areas',
+        'soil': 'Loamy, well-drained soil',
+        'fertilizer': 'Organic compost and NPK blend',
+        'watering': 'Regular watering, avoid waterlogging',
+        'precautions': 'Control fruit borer and bacterial blight'
+    },
+    'banana': {
+        'season': 'Year-round in tropical areas',
+        'soil': 'Rich, well-drained loamy soil',
+        'fertilizer': 'High in potassium and nitrogen',
+        'watering': 'Frequent irrigation, especially during dry periods',
+        'precautions': 'Monitor for Panama disease and nematodes'
+    },
+    'mango': {
+        'season': 'Flowering in Jan-Feb, harvest in summer',
+        'soil': 'Well-drained alluvial or loamy soil',
+        'fertilizer': 'Organic manure and NPK annually',
+        'watering': 'Moderate irrigation, avoid during flowering',
+        'precautions': 'Watch for fruit flies and powdery mildew'
+    },
+    'grapes': {
+        'season': 'Pruned in winter, harvest in summer',
+        'soil': 'Well-drained sandy loam',
+        'fertilizer': 'Balanced NPK, especially potassium',
+        'watering': 'Controlled irrigation, avoid excess moisture',
+        'precautions': 'Protect from downy mildew and mealy bugs'
+    },
+    'watermelon': {
+        'season': 'Summer (Feb - May)',
+        'soil': 'Sandy loam soil with good drainage',
+        'fertilizer': 'Rich in phosphorus and potassium',
+        'watering': 'Moderate irrigation, especially during fruiting',
+        'precautions': 'Watch for fruit rot and aphids'
+    },
+    'muskmelon': {
+        'season': 'Summer (Feb - May)',
+        'soil': 'Loamy, well-drained soil',
+        'fertilizer': 'Organic manure and potash',
+        'watering': 'Moderate watering, reduce before harvest',
+        'precautions': 'Monitor powdery mildew and fruit flies'
+    },
+    'apple': {
+        'season': 'Temperate zones, harvest in autumn',
+        'soil': 'Well-drained loamy soil with good organic matter',
+        'fertilizer': 'Balanced NPK, calcium, and boron',
+        'watering': 'Regular watering during dry spells',
+        'precautions': 'Prevent scab and codling moth'
+    },
+    'orange': {
+        'season': 'Harvest varies by variety',
+        'soil': 'Sandy loam to loamy soil',
+        'fertilizer': 'Rich in nitrogen and micronutrients',
+        'watering': 'Frequent irrigation during dry periods',
+        'precautions': 'Citrus canker and aphid management'
+    },
+    'papaya': {
+        'season': 'Year-round in warm climates',
+        'soil': 'Well-drained sandy loam soil',
+        'fertilizer': 'NPK and micronutrients',
+        'watering': 'Frequent light watering',
+        'precautions': 'Protect from viral diseases and root rot'
+    },
+    'coconut': {
+        'season': 'Planting during monsoon preferred',
+        'soil': 'Sandy loam to red loam, well-drained',
+        'fertilizer': 'NPK with magnesium and boron',
+        'watering': 'Regular watering in dry periods',
+        'precautions': 'Control rhinoceros beetle and bud rot'
+    },
+    'jute': {
+        'season': 'Kharif (March - July)',
+        'soil': 'Alluvial soil with good fertility',
+        'fertilizer': 'Nitrogen and phosphorus',
+        'watering': 'Needs adequate rainfall or irrigation',
+        'precautions': 'Prevent root rot and stem weevil'
+    },
+    'coffee': {
+        'season': 'Harvest from Nov to Jan',
+        'soil': 'Well-drained fertile loamy soil with organic matter',
+        'fertilizer': 'NPK with organic manure',
+        'watering': 'Adequate moisture, avoid waterlogging',
+        'precautions': 'Protect from coffee rust and berry borer'
+    },
+    'cotton': {
+        'season': 'Kharif (April - October)',
+        'soil': 'Black soil or alluvial soil',
+        'fertilizer': 'NPK, especially potassium',
+        'watering': 'Moderate irrigation at critical stages',
+        'precautions': 'Bollworms and aphid control'
+    }
 }
 
 # ------------ TRAINING FUNCTIONS ------------
